@@ -14,7 +14,7 @@ class Packet:
     karte1 = [i+1 for i in range(52)]
 
     def __init__(self, rand=True):
-        self.cards = karte
+        self.cards = Packet.karte
 
     def __repr__(self):
         return f"Packet(cards)"
@@ -23,10 +23,10 @@ class Packet:
         return "Instance of class Packet"
 
     def random_hand(self, size):
-        indeksi = random.choice(karte1, size=size)
+        indeksi = random.choice(Packet.karte1, size=size)
         hand = []
         for i in indeksi:
-            hand.append(karte[i])
+            hand.append(Packet.karte[i])
         return hand
 
 class Hand:
@@ -94,6 +94,28 @@ class Hand:
             return [True, barva, sez]
         else:
             return [False, barva, sez]
+
+    def poker(self):
+        pomozni = []
+        for e in self.cards:
+            pomozni.append(e[0])
+        m = 0
+        for e in pomozni:
+            if pomozni.count(e) > m:
+                m = pomozni.count(e)
+                poker = e
+        return [m == 4, poker]
+
+    def tris(self):
+        pomozni = []
+        for e in self.cards:
+            pomozni.append(e[0])
+        m = 0
+        for e in pomozni:
+            if pomozni.count(e) > m:
+                m = pomozni.count(e)
+                tris = e
+        return [m == 3, tris]
 
         
     
