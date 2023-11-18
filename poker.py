@@ -4,25 +4,18 @@ import random
 from model_poker import Packet, Hand
 
 
-#def par(sez):
-#    pomozni = []
-#    for e in sez:
-#        pomozni.append(e[0])
-#    m = 0
-#    for e in pomozni:
-#        if pomozni.count(e) > m:
-#            m = pomozni.count(e)
-#            par = e
-#    return [m == 2, par]
-#
-#def ful(sez):
-#    if tris(sez)[0]:
-#        pomozni = []
-#        for e in sez:
-#            if e[0] == tris(sez)[1]:
-#                pomozni.append(e)
-#        sez1 = [x for x in sez if x not in pomozni]
-#        return [par(sez1)[0], tris(sez)[1], par(sez1)[1]]
+def par(sez):
+    pomozni = []
+    for e in sez:
+        pomozni.append(e[0])
+    m = 0
+    for e in pomozni:
+        if pomozni.count(e) > m:
+            m = pomozni.count(e)
+            par = e
+    return [m == 2, par]
+
+
 #
 #def dva_para(sez):
 #    pomozni = []
@@ -39,8 +32,18 @@ from model_poker import Packet, Hand
 #    l1.sort()
 #    return [True, l1[-1],l1[-2]]
 
-packet = Packet()
-cards = packet.random_hand(7)
-hand = Hand(cards)
+#Preverimo, v kakšnem deležu primerov dobimo flush
 
-print(hand.flush())
+n = 0
+for i in range(10000):
+    packet = Packet()
+    cards = packet.random_hand(7)
+    hand = Hand(cards)
+    if hand.ful()[0]:
+        n += 1
+
+print(n/100)
+        
+
+
+

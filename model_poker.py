@@ -11,7 +11,7 @@ class Packet:
         for m in range(4):
             karte.append((n+1,m+1))
 
-    karte1 = [i+1 for i in range(52)]
+    karte1 = [i for i in range(52)]
 
     def __init__(self, rand=True):
         self.cards = Packet.karte
@@ -23,7 +23,7 @@ class Packet:
         return "Instance of class Packet"
 
     def random_hand(self, size):
-        indeksi = random.choice(Packet.karte1, size=size)
+        indeksi = random.choice(Packet.karte1, size=size,replace=False)
         hand = []
         for i in indeksi:
             hand.append(Packet.karte[i])
@@ -70,13 +70,13 @@ class Hand:
                 barva = e
         if m < 5:
             return [False, barva]
-        return [True, barva]
+        return [True, barva, self.cards]
 
     def straight_flush(self):
         m = 0
         barva = 0
         pomozni = []
-        for e in sez:
+        for e in self.cards:
             pomozni.append(e[1])
         for b in pomozni:
             if pomozni.count(b) > m:
@@ -85,15 +85,18 @@ class Hand:
         if m < 5:
             return [False, barva, []]
         indeksi = []
-        for e in sez:
+        for e in self.cards:
             if e[1] != barva:
                 indeksi.append(e)
+        sez = []
+        for e in self.cards:
+            sez.append(e)
         for e in indeksi:
             sez.remove(e)
-        if self.straight(Hand(sez))[0]:
-            return [True, barva, sez]
+        if Hand(sez).straight()[0]:
+            return [True, barva, self.cards]
         else:
-            return [False, barva, sez]
+            return [False, barva, self.cards]
 
     def poker(self):
         pomozni = []
@@ -116,6 +119,28 @@ class Hand:
                 m = pomozni.count(e)
                 tris = e
         return [m == 3, tris]
+
+    def pair(self):
+        pomozni = []
+        for e in self.cards:
+            pomozni.append(e[0])
+        m = 0
+        for el in pomozni:
+            if pomozni.count(el) > m:
+                m = pomozni.count(e)
+                par = e
+        return [m == 2, par]
+    
+    def ful(self):
+        if self.tris()[0]:
+            pomozni = []
+            for e in self.cards:
+                if e[0] == self.tris()[1]:
+                    pomozni.append(e)
+            sez1 = [x for x in self.cards if x not in pomozni]
+            return [Hand(sez1).pair()[0], self.tris()[1], Hand(sez1).pair()[1]]
+        else:
+            return [False, self.cards]
 
         
     
