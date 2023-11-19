@@ -129,6 +129,8 @@ class Hand:
             if pomozni.count(el) > m:
                 m = pomozni.count(el)
                 par = e
+        if par == 1:
+            par = 14
         return [m == 2, par]
 
     def two_pairs(self):
@@ -163,28 +165,41 @@ class Hand:
         sez = []
         for e in self.cards:
             sez.append(e[0])
+        if 1 in sez:
+            return 14
         return max(sez)
 
     def its_value(self):
         if self.straight_flush()[0]:
-            return ('staight_flush', self.straight_flush())
+            return ('staight_flush', self.straight_flush(), 8)
         elif self.poker()[0]:
-            return ('poker', self.poker())
+            return ('poker', self.poker(), 7)
         elif self.ful()[0]:
-            return ('ful', self.ful())
+            return ('ful', self.ful(), 6)
         elif self.flush()[0]:
-            return ('flush', self.flush())
+            return ('flush', self.flush(), 5)
         elif self.straight()[0]:
-            return ('straight', self.straight())
+            return ('straight', self.straight(), 4)
         elif self.tris()[0]:
-            return ('tris', self.tris())
+            return ('tris', self.tris(), 3)
         elif self.two_pairs()[0]:
-            return ('two_pairs', self.two_pairs())
+            return ('two_pairs', self.two_pairs(), 2)
         elif self.pair()[0]:
-            return ('pair', self.pair())
+            return ('pair', self.pair(), 14 + self.pair()[1])
         else:
-            return ('high_card', self.high_card())
+            return ('high_card', self.high_card(), 0 + self.high_card())
 
+#Let's define another function for finding the winner of a hand. 
+def winner(list_of_hands):
+    w = 0
+    list_of_winners = []
+    for e in list_of_hands:
+        if e.its_value()[2] > w:
+            w = e.its_value()[2]
+    for e in list_of_hands:
+        if e.its_value()[2] == w:
+            list_of_winners.append(e)
+    return list_of_winners
 
         
     
