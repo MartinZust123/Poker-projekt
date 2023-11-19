@@ -55,7 +55,7 @@ class Hand:
             l.append(14)
         for n in range(len(l) - 4):
             if l[n] +4 == l[n+1] + 3 == l[n+2] + 2 == l[n+3] +1 == l[n+4]:
-                return [True,l]
+                return [True,l[n+4]]
         return [False,l]
 
     def flush(self):
@@ -118,6 +118,8 @@ class Hand:
             if pomozni.count(e) > m:
                 m = pomozni.count(e)
                 tris = e
+        if tris == 1:
+            tris == 14
         return [m == 3, tris]
 
     def pair(self):
@@ -145,6 +147,9 @@ class Hand:
         if len(set(l)) < 2:
             return [False, 1, 2]
         l1 = list(s)
+        if 1 in l1:
+            l1.remove(1)
+            l1.append(14)
         l1.sort()
         return [True, l1[-1],l1[-2]]
     
@@ -179,11 +184,11 @@ class Hand:
         elif self.flush()[0]:
             return ('flush', self.flush(), 5)
         elif self.straight()[0]:
-            return ('straight', self.straight(), 4)
+            return ('straight', self.straight(), 75 + self.straight()[1])
         elif self.tris()[0]:
-            return ('tris', self.tris(), 3)
+            return ('tris', self.tris(), 60 + self.tris()[1])
         elif self.two_pairs()[0]:
-            return ('two_pairs', self.two_pairs(), 2)
+            return ('two_pairs', self.two_pairs(), 28 + self.two_pairs()[1] + self.two_pairs()[2])
         elif self.pair()[0]:
             return ('pair', self.pair(), 14 + self.pair()[1])
         else:
