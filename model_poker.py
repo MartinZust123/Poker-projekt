@@ -127,9 +127,24 @@ class Hand:
         m = 0
         for el in pomozni:
             if pomozni.count(el) > m:
-                m = pomozni.count(e)
+                m = pomozni.count(el)
                 par = e
         return [m == 2, par]
+
+    def two_pairs(self):
+        pomozni = []
+        for e in self.cards:
+            pomozni.append(e[0])
+        l = []
+        for e in pomozni:
+            if pomozni.count(e) == 2:
+                l.append(e)
+        s = set(l)
+        if len(set(l)) < 2:
+            return [False, 1, 2]
+        l1 = list(s)
+        l1.sort()
+        return [True, l1[-1],l1[-2]]
     
     def ful(self):
         if self.tris()[0]:
@@ -138,9 +153,38 @@ class Hand:
                 if e[0] == self.tris()[1]:
                     pomozni.append(e)
             sez1 = [x for x in self.cards if x not in pomozni]
+            if Hand(sez1).two_pairs()[0]:
+                return [True, self.tris()[1], Hand(sez1).two_pairs()[1], self.cards]
             return [Hand(sez1).pair()[0], self.tris()[1], Hand(sez1).pair()[1]]
         else:
             return [False, self.cards]
+
+    def high_card(self):
+        sez = []
+        for e in self.cards:
+            sez.append(e[0])
+        return max(sez)
+
+    def its_value(self):
+        if self.straight_flush()[0]:
+            return ('staight_flush', self.straight_flush())
+        elif self.poker()[0]:
+            return ('poker', self.poker())
+        elif self.ful()[0]:
+            return ('ful', self.ful())
+        elif self.flush()[0]:
+            return ('flush', self.flush())
+        elif self.straight()[0]:
+            return ('straight', self.straight())
+        elif self.tris()[0]:
+            return ('tris', self.tris())
+        elif self.two_pairs()[0]:
+            return ('two_pairs', self.two_pairs())
+        elif self.pair()[0]:
+            return ('pair', self.pair())
+        else:
+            return ('high_card', self.high_card())
+
 
         
     
