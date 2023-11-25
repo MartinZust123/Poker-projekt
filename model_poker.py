@@ -70,7 +70,12 @@ class Hand:
                 barva = e
         if m < 5:
             return [False, barva]
-        return [True, barva, self.cards]
+        else:
+            sez = []
+            for e in self.cards:
+                if e[1] == barva:
+                    sez.append(e[0]) 
+            return [True, barva, max(sez)]
 
     def straight_flush(self):
         m = 0
@@ -176,13 +181,13 @@ class Hand:
 
     def its_value(self):
         if self.straight_flush()[0]:
-            return ('staight_flush', self.straight_flush(), 8)
+            return ('staight_flush', self.straight_flush(), 200)
         elif self.poker()[0]:
-            return ('poker', self.poker(), 7)
+            return ('poker', self.poker(), 120 + self.poker()[1])
         elif self.ful()[0]:
-            return ('ful', self.ful(), 6)
+            return ('ful', self.ful(), 105 + self.ful()[1])
         elif self.flush()[0]:
-            return ('flush', self.flush(), 5)
+            return ('flush', self.flush(), 90 + self.flush()[2])
         elif self.straight()[0]:
             return ('straight', self.straight(), 75 + self.straight()[1])
         elif self.tris()[0]:
