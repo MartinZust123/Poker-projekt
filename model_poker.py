@@ -135,7 +135,7 @@ class Hand:
         for el in pomozni:
             if pomozni.count(el) > m:
                 m = pomozni.count(el)
-                par = e
+                par = el
         if par == 1:
             par = 14
         return [m == 2, par]
@@ -199,17 +199,7 @@ class Hand:
         else:
             return ('high_card', self.high_card(), 0 + self.high_card())
 
-#Let's define another function for finding the winner of a hand. 
-def winner(list_of_hands):
-    w = 0
-    list_of_winners = []
-    for e in list_of_hands:
-        if e.its_value()[2] > w:
-            w = e.its_value()[2]
-    for e in list_of_hands:
-        if e.its_value()[2] == w:
-            list_of_winners.append(e)
-    return list_of_winners
+
 
         
     
